@@ -24,5 +24,5 @@ object AppModule{
 
     @Singleton
     @Provides
-    fun provideAlgoDao(primerParcialDb: PrimerParcialDb) = primerParcialDb.algoDao()
+    fun provideAlgoDao(primerParcialDb: PrimerParcialDb) = primerParcialDb.ventaDao()
 }
