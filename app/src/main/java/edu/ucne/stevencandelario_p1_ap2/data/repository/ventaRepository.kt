@@ -7,8 +7,8 @@ import javax.inject.Inject
 class ventaRepository @Inject constructor(
     private val ventasDao: ventasDao
 ) {
-    suspend fun save(algo: ventaEntity) = ventasDao.save(algo)
-    suspend fun delete(algo: ventaEntity) = ventasDao.delete(algo)
+    suspend fun save(venta: ventaEntity) = ventasDao.save(venta)
+    suspend fun delete(venta: ventaEntity) = ventasDao.delete(venta)
     fun getAll() = ventasDao.getAll()
     suspend fun find(id: Int) = ventasDao.find(id)
 }
