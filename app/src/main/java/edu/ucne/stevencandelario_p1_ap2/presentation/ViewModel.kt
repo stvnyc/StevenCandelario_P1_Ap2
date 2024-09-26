@@ -23,17 +23,26 @@ class ViewModel @Inject constructor(
         getVenta()
     }
 
-    fun save(){
+    fun save() {
         viewModelScope.launch {
-            if (_uiState.value.nombreEmpresa.isBlank() && _uiState.value.galones.toString().isBlank()){
+            val nombreEmpresa = _uiState.value.nombreEmpresa
+            val galones = _uiState.value.galones
+            val descuentoGalon = _uiState.value.descuestoGalon
+            val precio = _uiState.value.precio
+
+            if (nombreEmpresa.isBlank() || galones == null || descuentoGalon == null || precio == null) {
                 _uiState.update {
-                    it.copy(message = "Debe ingresar los campos")
+                    it.copy(message = "Debe completar todos los campos")
                 }
-            } else  {
+            } else {
                 ventaRepository.save(_uiState.value.toEntity())
+                _uiState.update {
+                    it.copy(message = "Guardado exitosamente")
+                }
             }
         }
     }
+
 
     private fun getVenta(){
         viewModelScope.launch {
