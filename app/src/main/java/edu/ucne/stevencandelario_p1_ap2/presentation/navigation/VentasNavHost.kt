@@ -21,11 +21,11 @@ fun VentasNavHost(
         }
 
         composable<Screen.VentasRegistroScreen> {
-            val algoId = it.toRoute<Screen.VentasRegistroScreen>().Id
+            val ventasId = it.toRoute<Screen.VentasRegistroScreen>().Id
             VentasRegistroScreen(
                 onGoToVentasListScreen = {navHostController.navigateUp() },
                 goBack = { navHostController.navigateUp() },
-                ventasId = algoId
+                ventasId = ventasId
             )
         }
     }
