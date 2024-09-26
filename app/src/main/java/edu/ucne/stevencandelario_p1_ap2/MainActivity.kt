@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import edu.ucne.stevencandelario_p1_ap2.presentation.navigation.NavHostExamen
+import edu.ucne.stevencandelario_p1_ap2.presentation.navigation.VentasNavHost
 import edu.ucne.stevencandelario_p1_ap2.ui.theme.StevenCandelario_P1_Ap2Theme
 
 @AndroidEntryPoint
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             StevenCandelario_P1_Ap2Theme {
                 val navHost = rememberNavController()
-                NavHostExamen(navHost)
+                VentasNavHost(navHost)
             }
         }
     }
