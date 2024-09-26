@@ -9,7 +9,7 @@ import edu.ucne.stevencandelario_p1_ap2.data.local.entities.ventaEntity
     entities = [
         ventaEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 
