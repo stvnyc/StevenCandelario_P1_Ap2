@@ -1,3 +1,4 @@
+// ViewModel.kt
 package edu.ucne.stevencandelario_p1_ap2.presentation
 
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ViewModel @Inject constructor(
     private val ventaRepository: ventaRepository
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
@@ -26,11 +27,11 @@ class ViewModel @Inject constructor(
     fun save() {
         viewModelScope.launch {
             val nombreEmpresa = _uiState.value.nombreEmpresa
-            val galones = _uiState.value.galones
+            val galon = _uiState.value.galones
             val descuentoGalon = _uiState.value.descuestoGalon
             val precio = _uiState.value.precio
 
-            if (nombreEmpresa.isBlank() || galones == null || descuentoGalon == null || precio == null) {
+            if (nombreEmpresa.isBlank() || galon == null || descuentoGalon == null || precio == null) {
                 _uiState.update {
                     it.copy(message = "Debe completar todos los campos")
                 }
@@ -43,8 +44,7 @@ class ViewModel @Inject constructor(
         }
     }
 
-
-    private fun getVenta(){
+    private fun getVenta() {
         viewModelScope.launch {
             ventaRepository.getAll().collect { venta ->
                 _uiState.update {
@@ -57,18 +57,25 @@ class ViewModel @Inject constructor(
     fun delete() {
         viewModelScope.launch {
             ventaRepository.delete(_uiState.value.toEntity())
+            _uiState.update {
+                it.copy(message = "Venta eliminada exitosamente")
+            }
         }
     }
 
-    fun selectedVenta(ventasId:Int){
+    fun selectedVenta(ventasId: Int) {
         viewModelScope.launch {
-            if (ventasId > 0){
+            if (ventasId > 0) {
                 val venta = ventaRepository.find(ventasId)
                 _uiState.update {
                     it.copy(
-                        ventasId = venta?.ventasId,
-                        nombreEmpresa = venta?.nombreEmpresa ?: "",
-                        galones = venta?.galones
+                        ventasId = venta.ventasId,
+                        nombreEmpresa = venta.nombreEmpresa,
+                        galones = venta.galones,
+                        descuestoGalon = venta.descuestoGalon,
+                        precio = venta.precio,
+                        totalDescontado = venta.totalDescontado,
+                        total = venta.total
                     )
                 }
             }
@@ -83,8 +90,8 @@ class ViewModel @Inject constructor(
                 galones = null,
                 descuestoGalon = null,
                 precio = null,
-                totalDescontado = null,
-                total = null,
+                totalDescontado = 0.0,
+                total = 0.0,
                 message = null
             )
         }
@@ -96,35 +103,28 @@ class ViewModel @Inject constructor(
         }
     }
 
-    fun onGalonChange(galones: String) {
-        val galon = galones.toIntOrNull()
+    fun onGalonChange(galones: Double) {
+        val galon = galones
         _uiState.update {
-            it.copy(galones = galon)
+            it.copy(galones = galones)
         }
         calculateTotals()
     }
 
-    fun onDescuentoGalonChange(descuestoGalon: String) {
-        val descuento = descuestoGalon.toIntOrNull()
+    fun onDescuentoGalonChange(descuestoGalon: Double) {
+        val descuento = descuestoGalon
         _uiState.update {
-            it.copy(descuestoGalon = descuento)
+            it.copy(descuestoGalon = descuestoGalon)
         }
         calculateTotals()
     }
 
-    fun onPrecioChange(precio: String) {
-        val precio = precio.toIntOrNull()
+    fun onPrecioChange(precio: Double) {
+        val precioDouble = precio
         _uiState.update {
             it.copy(precio = precio)
         }
         calculateTotals()
-    }
-
-    fun onTotalDescontadoChange(totalDescontado: String) {
-        val totalD = totalDescontado.toIntOrNull()
-        _uiState.update {
-            it.copy(totalDescontado = totalD)
-        }
     }
 
     fun onVentasIdChange(ventasId: Int) {
@@ -133,21 +133,19 @@ class ViewModel @Inject constructor(
         }
     }
 
-    fun calculateTotals() {
-        val galones = _uiState.value.galones ?: 0
-        val descuentoGalon = _uiState.value.descuestoGalon ?: 0
-        val precio = _uiState.value.precio ?: 0
+    private fun calculateTotals() {
+        val galones = _uiState.value.galones ?: 0.0
+        val descuentoGalon = _uiState.value.descuestoGalon ?: 0.0
+        val precio = _uiState.value.precio ?: 0.0
 
         val totalDescontado = galones * descuentoGalon
-
         val total = (galones * precio) - totalDescontado
 
         _uiState.update {
             it.copy(
                 totalDescontado = totalDescontado,
-                total = total.toFloat()
+                total = total
             )
         }
     }
-
 }
