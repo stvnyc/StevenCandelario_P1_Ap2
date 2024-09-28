@@ -81,7 +81,7 @@ fun VentasListBodyScreen(
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    "Nombre de Empresa",
+                    "Empresa",
                     modifier = Modifier
                         .weight(2.5f)
                         .align(Alignment.CenterVertically),
@@ -90,38 +90,6 @@ fun VentasListBodyScreen(
                 )
                 Text(
                     "Galones",
-                    modifier = Modifier
-                        .weight(2.5f)
-                        .align(Alignment.CenterVertically),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    "Descuento de Galon",
-                    modifier = Modifier
-                        .weight(2.5f)
-                        .align(Alignment.CenterVertically),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    "Precio",
-                    modifier = Modifier
-                        .weight(2.5f)
-                        .align(Alignment.CenterVertically),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    "Total descontado",
-                    modifier = Modifier
-                        .weight(2.5f)
-                        .align(Alignment.CenterVertically),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    "Total",
                     modifier = Modifier
                         .weight(2.5f)
                         .align(Alignment.CenterVertically),
@@ -174,34 +142,6 @@ private fun VentaRow(
             modifier = Modifier
                 .weight(2.5f),
             text = it.galones.toString(),
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            modifier = Modifier
-                .weight(2.5f),
-            text = it.descuestoGalon.toString(),
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            modifier = Modifier
-                .weight(2.5f),
-            text = it.precio.toString(),
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            modifier = Modifier
-                .weight(2.5f),
-            text = it.totalDescontado.toString(),
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            modifier = Modifier
-                .weight(2.5f),
-            text = it.total.toString(),
             fontSize = 18.sp,
             textAlign = TextAlign.Center
         )
