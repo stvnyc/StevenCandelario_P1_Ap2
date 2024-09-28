@@ -74,9 +74,9 @@ fun VentasRegistroScreen(
 fun VentasRegistroBodyScreen(
     uiState: UiState,
     onNombreEmpresaChange: (String) -> Unit,
-    onGalonChange: (String) -> Unit,
-    onDescuentoGalonChange: (String) -> Unit,
-    onPrecioChange: (String) -> Unit,
+    onGalonChange: (Double) -> Unit,
+    onDescuentoGalonChange: (Double) -> Unit,
+    onPrecioChange: (Double) -> Unit,
     saveVenta: () -> Unit,
     deleteVenta: () -> Unit,
     nuevaVenta: () -> Unit,
@@ -123,7 +123,7 @@ fun VentasRegistroBodyScreen(
                 OutlinedTextField(
                     label = { Text(text = "Galones") },
                     value = uiState.galones?.toString() ?: "",
-                    onValueChange = onGalonChange,
+                    onValueChange = {onGalonChange(it.toDouble())},
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
@@ -131,7 +131,7 @@ fun VentasRegistroBodyScreen(
                 OutlinedTextField(
                     label = { Text(text = "Descuento por Galón") },
                     value = uiState.descuestoGalon?.toString() ?: "",
-                    onValueChange = onDescuentoGalonChange,
+                    onValueChange = { onDescuentoGalonChange(it.toDouble()) },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
@@ -139,7 +139,7 @@ fun VentasRegistroBodyScreen(
                 OutlinedTextField(
                     label = { Text(text = "Precio") },
                     value = uiState.precio?.toString() ?: "",
-                    onValueChange = onPrecioChange,
+                    onValueChange = { onPrecioChange(it.toDouble()) },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
