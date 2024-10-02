@@ -11,6 +11,10 @@ data class UiState(
     val totalDescontado: Double = 0.0,
     val total: Double = 0.0,
     val message: String? = null,
+    val messageNombreEmpresa: String? = null,
+    val messageGalones: String? = null,
+    val messageDescuestoGalon: String? = null,
+    val messagePrecio: String? = null,
     val venta: List<ventaEntity> = emptyList()
 )
 

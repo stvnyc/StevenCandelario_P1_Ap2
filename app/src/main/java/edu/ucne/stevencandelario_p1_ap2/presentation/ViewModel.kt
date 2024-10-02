@@ -24,22 +24,68 @@ class ViewModel @Inject constructor(
         getVenta()
     }
 
-    fun save() {
-        viewModelScope.launch {
-            val nombreEmpresa = _uiState.value.nombreEmpresa
-            val galon = _uiState.value.galones
-            val descuentoGalon = _uiState.value.descuestoGalon
-            val precio = _uiState.value.precio
+    private fun esValido(): Boolean {
+        var esValido = true
+        if (uiState.value.nombreEmpresa.isNullOrBlank()) {
+            _uiState.update {
+                it.copy(messageNombreEmpresa = "La descripción no puede estar vacía")
+            }
+            esValido = false
+        } else {
+            _uiState.update {
+                it.copy(messageNombreEmpresa = null)
+            }
+        }
 
-            if (nombreEmpresa.isBlank() || galon == null || descuentoGalon == null || precio == null) {
-                _uiState.update {
-                    it.copy(message = "Debe completar todos los campos")
-                }
-            } else {
+        if (uiState.value.galones == null) {
+            _uiState.update {
+                it.copy(messageGalones = "La cantidad de galones no puede estar vacía")
+            }
+            esValido = false
+        } else {
+            _uiState.update {
+                it.copy(messageGalones = null)
+            }
+        }
+
+        if (uiState.value.descuestoGalon == null) {
+            _uiState.update {
+                it.copy(messageDescuestoGalon = "El descuento por galón no puede estar vacío")
+            }
+            esValido = false
+        } else if (uiState.value.precio != null && uiState.value.descuestoGalon!! > uiState.value.precio!!) {
+            _uiState.update {
+                it.copy(messageDescuestoGalon = "El descuento por galón no puede ser mayor que el precio")
+            }
+            esValido = false
+        } else {
+            _uiState.update {
+                it.copy(messageDescuestoGalon = null)
+            }
+        }
+
+        if (uiState.value.precio == null) {
+            _uiState.update {
+                it.copy(messagePrecio = "El precio no puede estar vacío")
+            }
+            esValido = false
+        } else {
+            _uiState.update {
+                it.copy(messagePrecio = null)
+            }
+        }
+
+        return esValido
+    }
+
+    fun save() {
+        if (esValido()){
+            viewModelScope.launch {
                 ventaRepository.save(_uiState.value.toEntity())
                 _uiState.update {
                     it.copy(message = "Guardado exitosamente")
                 }
+                nuevo()
             }
         }
     }
@@ -57,9 +103,6 @@ class ViewModel @Inject constructor(
     fun delete() {
         viewModelScope.launch {
             ventaRepository.delete(_uiState.value.toEntity())
-            _uiState.update {
-                it.copy(message = "Venta eliminada exitosamente")
-            }
         }
     }
 
