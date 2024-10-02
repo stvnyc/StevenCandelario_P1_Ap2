@@ -8,9 +8,9 @@ data class ventaEntity(
     @PrimaryKey
     val ventasId: Int? = null,
     val nombreEmpresa: String = "",
-    val galones: Int? = null,
-    val descuestoGalon: Int? = null,
-    val precio: Int? = null,
-    val totalDescontado: Int? = null,
-    val total: Float? = null
+    val galones: Double? = null,
+    val descuestoGalon: Double? = null,
+    val precio: Double? = null,
+    val totalDescontado: Double = 0.0,
+    val total: Double = 0.0
 )

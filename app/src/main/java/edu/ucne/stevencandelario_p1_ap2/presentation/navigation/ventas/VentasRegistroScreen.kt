@@ -24,8 +24,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.ucne.stevencandelario_p1_ap2.presentation.ViewModel
@@ -44,12 +46,6 @@ fun VentasRegistroScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.message) {
-        if (uiState.message == "Guardado exitosamente") {
-            goBack()
-        }
-    }
-
     VentasRegistroBodyScreen(
         uiState = uiState,
         onNombreEmpresaChange = viewModel::onNombreEmpresaChange,
@@ -58,10 +54,6 @@ fun VentasRegistroScreen(
         onPrecioChange = viewModel::onPrecioChange,
         saveVenta = {
             viewModel.save()
-        },
-        deleteVenta = {
-            viewModel.delete()
-            goBack()
         },
         nuevaVenta = viewModel::nuevo,
         onGoToVentasListScreen = onGoToVentasListScreen,
@@ -74,11 +66,10 @@ fun VentasRegistroScreen(
 fun VentasRegistroBodyScreen(
     uiState: UiState,
     onNombreEmpresaChange: (String) -> Unit,
-    onGalonChange: (String) -> Unit,
-    onDescuentoGalonChange: (String) -> Unit,
-    onPrecioChange: (String) -> Unit,
+    onGalonChange: (Double) -> Unit,
+    onDescuentoGalonChange: (Double) -> Unit,
+    onPrecioChange: (Double) -> Unit,
     saveVenta: () -> Unit,
-    deleteVenta: () -> Unit,
     nuevaVenta: () -> Unit,
     onGoToVentasListScreen: () -> Unit,
     goBack: () -> Unit,
@@ -119,30 +110,58 @@ fun VentasRegistroBodyScreen(
                     onValueChange = onNombreEmpresaChange,
                     modifier = Modifier.fillMaxWidth()
                 )
+                if (uiState.messageNombreEmpresa != null) {
+                    Text(
+                        text = uiState.messageNombreEmpresa,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
 
                 OutlinedTextField(
                     label = { Text(text = "Galones") },
                     value = uiState.galones?.toString() ?: "",
-                    onValueChange = onGalonChange,
+                    onValueChange = {onGalonChange(it.toDouble())},
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
+                if (uiState.messageGalones != null) {
+                    Text(
+                        text = uiState.messageGalones,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
 
                 OutlinedTextField(
                     label = { Text(text = "Descuento por Galón") },
                     value = uiState.descuestoGalon?.toString() ?: "",
-                    onValueChange = onDescuentoGalonChange,
+                    onValueChange = { onDescuentoGalonChange(it.toDouble()) },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
+                if (uiState.messageDescuestoGalon != null) {
+                    Text(
+                        text = uiState.messageDescuestoGalon,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
 
                 OutlinedTextField(
                     label = { Text(text = "Precio") },
                     value = uiState.precio?.toString() ?: "",
-                    onValueChange = onPrecioChange,
+                    onValueChange = { onPrecioChange(it.toDouble()) },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
+                if (uiState.messagePrecio != null) {
+                    Text(
+                        text = uiState.messagePrecio,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
 
                 OutlinedTextField(
                     label = { Text(text = "Total descontado") },
@@ -181,13 +200,6 @@ fun VentasRegistroBodyScreen(
                     OutlinedButton(onClick = saveVenta) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null)
                         Text(text = if (ventasId > 0) "Actualizar" else "Guardar")
-                    }
-
-                    if (ventasId > 0) {
-                        OutlinedButton(onClick = deleteVenta) {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                            Text(text = "Eliminar", color = MaterialTheme.colorScheme.error)
-                        }
                     }
                 }
             }
