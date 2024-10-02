@@ -55,10 +55,6 @@ fun VentasRegistroScreen(
         saveVenta = {
             viewModel.save()
         },
-        deleteVenta = {
-            viewModel.delete()
-            goBack()
-        },
         nuevaVenta = viewModel::nuevo,
         onGoToVentasListScreen = onGoToVentasListScreen,
         goBack = goBack,
@@ -74,7 +70,6 @@ fun VentasRegistroBodyScreen(
     onDescuentoGalonChange: (Double) -> Unit,
     onPrecioChange: (Double) -> Unit,
     saveVenta: () -> Unit,
-    deleteVenta: () -> Unit,
     nuevaVenta: () -> Unit,
     onGoToVentasListScreen: () -> Unit,
     goBack: () -> Unit,
@@ -205,13 +200,6 @@ fun VentasRegistroBodyScreen(
                     OutlinedButton(onClick = saveVenta) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null)
                         Text(text = if (ventasId > 0) "Actualizar" else "Guardar")
-                    }
-
-                    if (ventasId > 0) {
-                        OutlinedButton(onClick = deleteVenta) {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                            Text(text = "Eliminar", color = MaterialTheme.colorScheme.error)
-                        }
                     }
                 }
             }

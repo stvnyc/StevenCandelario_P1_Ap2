@@ -1,9 +1,9 @@
-// ViewModel.kt
 package edu.ucne.stevencandelario_p1_ap2.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.ucne.stevencandelario_p1_ap2.data.local.entities.ventaEntity
 import edu.ucne.stevencandelario_p1_ap2.data.repository.ventaRepository
 import edu.ucne.stevencandelario_p1_ap2.presentation.navigation.ventas.UiState
 import edu.ucne.stevencandelario_p1_ap2.presentation.navigation.ventas.toEntity
@@ -100,9 +100,9 @@ class ViewModel @Inject constructor(
         }
     }
 
-    fun delete() {
+    fun delete(venta: ventaEntity) {
         viewModelScope.launch {
-            ventaRepository.delete(_uiState.value.toEntity())
+            ventaRepository.delete(venta)
         }
     }
 
